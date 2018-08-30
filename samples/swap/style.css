@@ -1,0 +1,20 @@
+div.balance {
+  /* main style */
+  font-family: "Courier", "Courier New";
+    /* I recommend using this font because of constant character width */
+  text-align: right;
+    /* Always align to the right */
+  font-weight: bold;
+  font-size: larger;
+}
+
+div.balance span.zz {
+  /* leading zeros */
+  color: #888888;
+}
+
+div.balance span.ii {
+  /* insignificant digits */
+  font-weight: normal;
+  font-size: medium;
+}

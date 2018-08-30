@@ -19,7 +19,7 @@ function intersect(a, b) {
 }
 
 class BalanceFormatter {
-	constructor(balance, symbol, basePrice=1, baseSymbol='usd') {
+	constructor(balance, symbol, basePrice=1, baseSymbol='usdt') {
   	this.b = balance;
     this.sym = symbol;
     this.bs = balance.toString();
