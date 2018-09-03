@@ -1,18 +1,47 @@
 <html>
 <head>
-   <link rel="stylesheet" href="style.css">
-    <script src="https://vladiuz1.github.io/BEAUlance.js/beaulance.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="../../beaulance.js"></script>
+    <!-- <script src="https://vladiuz1.github.io/BEAUlance.js/beaulance.js"></script> -->
 </head>
-<body>
+<body style="background-color: aliceblue">
 
-<div align="center" style="width: 400px;">
-<div class="balance btc" balance="1023.39"></div>
+<div style="    position: absolute; top: 50%; left: 50%; margin-top: -50px; margin-left: -140px; width: 280px; height: 100px;">
+<div class="balance btc" balance="123234023.39"></div>
 </div>
 <script language="JavaScript">
-
-   window.onload = function(ev) {
-      updateBalances();
-   }
+    var prices = {
+      "usdt": 0.99,
+      "btc": 6320,
+      "eth": 252.34,
+      "viu": 0.001,
+      "jot": 0.12,
+      "swap": 2.03,
+      "pat": 0.01
+    }
+    function updateBalances() {
+      /*
+      Call this function from window.onload()
+      */
+      var divs = document.querySelectorAll('div.balance');
+        for (var i = 0; i < divs.length; i++) {
+        var div = divs[i];
+        var currency = intersect(Object.keys(prices), div.className.toLowerCase().split(" "))[0];
+        var b = new BalanceFormatter(parseFloat(div.getAttribute("balance")),
+                                currency,
+                                window.prices[currency]);
+        div.innerHTML  = b.html();
+        div.title = div.getAttribute("balance") + ' ' +
+                    currency.toUpperCase() + '\n(' +
+                    (Math.round(prices[currency]*
+                    parseFloat(div.getAttribute("balance")))).toFixed(2).toString() +
+                    ' USD)';
+      }
+    }
+    /* override onload to update all balances with our styles */
+    window.onload = function(ev) {
+       updateBalances();
+    }
 </script>
 </body>
 </html>

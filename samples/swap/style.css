@@ -6,11 +6,18 @@ div.balance {
     /* Always align to the right */
   font-weight: bold;
   font-size: larger;
+  border-radius: 5px;
+  background-color: white;
 }
 
 div.balance span.zz {
   /* leading zeros */
   color: #888888;
+}
+
+div.balance span.ss {
+  /* insert separator before the digit */
+  margin-left: 4px;
 }
 
 div.balance span.ii {
