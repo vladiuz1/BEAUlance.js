@@ -2,17 +2,13 @@
 BEAUlance.js
 Author: @vladiuz1
 Version: 0.1.1
+
+Javascript library that beautifies cryptocurrency balances.
+So instead of plain 0.23434398434 BTC you see something readable with significant bits hghlighted, and trailing zeros
+omitted.
 */
 
-var prices = {
-  "usdt": 0.99,
-  "btc": 6320,
-  "eth": 252.34,
-  "viu": 0.001,
-  "jot": 0.12,
-  "swap": 2.03,
-  "pat": 0.01
-}
+
 
 function intersect(a, b) {
       return [...new Set(a)].filter(x => new Set(b).has(x));
@@ -52,22 +48,26 @@ class BalanceFormatter {
         isZero = false;
       }
     }
+    var f = function(a, b, l) {
+      for (var i = b.length-1; i> l && i>0; i--)
+        a[i].push('ii');
+    }
     if (this.dec > 2)
-      for (var i = this.bs.length-1; i>this.bs.length - 3 && i>0; i--)
-        a[i].push('ii');
+      f(a, this.bs, this.bs.length - 3);
     else if (this.dec > 0)
-      for (var i = this.bs.length-1; i>this.bs.length - 4 && i>0; i--)
-        a[i].push('ii');
+      f(a, this.bs, this.bs.length - 4 );
     else
-      for (var i = this.bs.length-1; i > 0 && i>this.bs.length - 3 + this.dec; i--)
-          a[i].push('ii');
-
-    console.log(this.bs+'/'+this.dec);
-    console.log(JSON.stringify(a));
+      f(a, this.bs, this.bs.length - 3 + this.dec);
+    if (this.lft.length > 3)
+        for (var i = this.lft.length - 1; i>=0; i--)
+            if ((this.lft.length - i  ) % 3 == 0)
+                a[i].push('ss');
     this._html ='';
     for (var i = 0; i < this.bs.length; i++) {
       this._html += '<span class="'+a[i].join(' ')+'">'+this.bs[i]+'</span>';
-		}
+    }
+    this._html += '&nbsp;' + this.sym.toUpperCase() + '&nbsp;';
+
   }
   str() {
     /* returns balance as string */
@@ -77,31 +77,4 @@ class BalanceFormatter {
     /* returns balance as html */
     return this._html;
   }
-}
-
-
-
-function updateBalances() {
-  /*
-  Call this function from window.onload()
-  */
-  var divs = document.querySelectorAll('div.balance');
-	for (var i = 0; i < divs.length; i++) {
-    var div = divs[i];
-    var currency = intersect(Object.keys(prices), div.className.toLowerCase().split(" "))[0];
-    var b = new BalanceFormatter(parseFloat(div.getAttribute("balance")),
-    						currency,
-    						window.prices[currency]);
-		div.innerHTML  = b.html();
-    div.title = div.getAttribute("balance") + ' ' +
-                currency.toUpperCase() + '\n(' +
-                (Math.round(prices[currency]*
-                parseFloat(div.getAttribute("balance")))).toFixed(2).toString() +
-                ' USD)';
-  }
-}
-
-window.onload = function(ev) {
-    alert('loaded');
-   updateBalances();
 }
